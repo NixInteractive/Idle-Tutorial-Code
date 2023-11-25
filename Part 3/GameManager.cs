@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
         money*=2;
     }
 
-    public string SciNotToUSName(BigDouble num)
+    public static string SciNotToUSName(BigDouble num)
     {
         string displayNumber = $"{(num.Mantissa * BigDouble.Pow(10, num.Exponent % 3)):G3} ";
         int prefixIndex = (int)BigDouble.Floor(BigDouble.Abs(num.Exponent)).ToDouble();
