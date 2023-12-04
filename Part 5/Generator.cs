@@ -15,6 +15,8 @@ public class Generator : Monobehaviour
     public TextMeshProUGUI quantityDisp;
     public TextMeshProUGUI incomeDisp;
 
+    public Generator product;
+
     public BigDouble quantity;
     public BigDouble income;
 
@@ -40,7 +42,15 @@ public class Generator : Monobehaviour
 
         if(time >= maxTime)
         {
-            GM.money += income;
+            if(!product)
+            {
+                GM.money += income * quantity;
+            }
+            else
+            {
+                product.quantity += income * quantity;
+            }
+
             time = 0;
         }
 
