@@ -14,11 +14,16 @@ public class Generator : Monobehaviour
     public TextMeshProUGUI nameDisp;
     public TextMeshProUGUI quantityDisp;
     public TextMeshProUGUI incomeDisp;
+    public TextMeshProUGUI costDisp;
+
+    public Button buyButton;
 
     public Generator product;
 
     public BigDouble quantity;
     public BigDouble income;
+    public BigDouble productCost;
+    public BigBouble moneyCost;
 
     public float maxTime;
     public float time;
@@ -38,6 +43,15 @@ public class Generator : Monobehaviour
         incomeDisp.text = GM.SciNotToUSName(income);
         nameDisp.text = generatorName;
 
+        if(product)
+        {
+            costDisp.text = "Cost: " + product.generatorName + ": " + GM.SciNotToUSName(productCost) + " ~ Money: " + GM.SciNotToUSName(moneyCost);
+        }
+        else
+        {
+            costDisp.text = "Cost: " + GM.SciNotToUSName(moneyCost);
+        }
+
         time += Time.deltaTime;
 
         if(time >= maxTime)
@@ -55,5 +69,46 @@ public class Generator : Monobehaviour
         }
 
         progressBar.fillAmount = time / maxTime;
+
+        if(moneyCost >= GM.money)
+        {
+            if(productCost >= product.quantity)
+            {
+                buyButton.interactable = false;
+            }
+            else if(product)
+            {
+                if(productCost >= product.quantity)
+                {
+                    buyButton.interactable = false;
+                }
+            }
+            else
+            {
+                buyButton.interactable = true;
+            }
+        }
+    }
+
+    public void Buy()
+    {
+        if(moneyCost >= GM.money)
+        {
+            return;
+        }
+
+        if(product)
+        {
+            if(productCost >= product.quantity)
+            {
+                return;
+            }
+
+            product.quantity -= productCost;
+        }
+
+        GM.money -= moneyCost;
+
+        quantity++;
     }
 }
