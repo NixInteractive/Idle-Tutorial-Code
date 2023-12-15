@@ -8,8 +8,13 @@ using System;
 public class GameManager : MonoBehaviour
 {
     public BigDouble money = 0f;
+    public BigDouble startMoney;
 
     public TextMeshProUGUI moneyDisp;
+    public TextMeshProUGUI offlineDisp;
+    public TextMeshProUGUI offlineTimeDisp;
+
+    public GameObject offlinePanel;
 
     private DataPersist DP;
 
@@ -27,7 +32,48 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         moneyDisp.text = "Money: " + SciNotToUSName(money);
+        offlineDisp.text = SciNotToUSName(money - startMoney);
         SaveGame();
+    }
+
+    public void CloseOfflinePanel()
+    {
+        Destroy(offlinePanel);
+    }
+
+    private BigDouble CalculateOfflineTime()
+    {
+        BigDouble timeElapsed = DateTime.Now.Subtract(DP.GD.saveTime).TotalSeconds;
+        BigDouble maxOfflineTime = new BigDouble(43200);
+
+        if(timeElapsed > maxOfflineTime)
+        {
+            timeElapsed = maxOfflineTime;
+        }
+
+        if(timeElapsed < 0)
+        {
+            timeElapsed = 0;
+        }
+
+        return timeElapsed;
+    }
+
+    private void ProcessOfflineProduction(BigDouble timePassed)
+    {
+        if(timePassed < 5)
+        {
+            CloseOfflinePanel();
+        }
+
+        for(int i = generators.Length -1; i >= 0; i--)
+        {
+            if(generators[i].quantity > 0)
+            {
+                generators[i].time += timePassed;
+            }
+        }
+        offlineTimeDisp.text = TimeSpan.FromSeconds(CalculateOfflineTime().ToDouble()).ToString(@"hh\:mm\:ss");
     }
 
     public string SciNotToUSName(BigDouble num)
@@ -81,51 +127,20 @@ public class GameManager : MonoBehaviour
             DP.LoadData();
 
             money = DP.GD.money;
+            startMoney = money;
             generators[0].quantity = DP.GD.gen1;
             generators[1].quantity = DP.GD.gen2;
             generators[2].quantity = DP.GD.gen3;
-
-            Debug.Log(CalculateOfflineTime());
-            ProcessOffline(CalculateOfflineTime());
+            ProcessOfflineProduction(CalculateOfflineTime());
         }
         else
         {
+            CloseOfflinePanel();
             money += 11;
             generators[0].quantity = 0;
             generators[1].quantity = 0;
             generators[2].quantity = 0;
             SaveGame();
-        }
-    }
-
-    private BigDouble CalculateOfflineTime()
-    {
-        BigDouble timeElapsed = DateTime.Now.Subtract(DP.GD.saveTime).TotalSeconds;
-        BigDouble maxTimeAllowed = new BigDouble(43200);
-
-        if(timeElapsed > maxTimeAllowed)
-        {
-            timeElapsed = maxTimeAllowed;
-        }
-
-        if(timeElapsed < 0)
-        {
-            timeElapsed = 0;
-        }
-
-        return timeElapsed;
-    }
-
-    private void ProcessOffline(BigDouble timePassed)
-    {
-        for (int i = generators.Length - 1; i >= 0; i--)
-        {
-            Debug.Log(generators[i].quantity);
-            if (generators[i].quantity > 0)
-            {
-                generators[i].time += timePassed;
-            }
-            Debug.Log(generators[i].quantity);
         }
     }
 
