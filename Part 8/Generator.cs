@@ -33,7 +33,7 @@ public class Generator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -71,15 +71,15 @@ public class Generator : MonoBehaviour
             time -= maxTime;
         }
 
-        progressBar.fillAmount = (float)BigDouble.Divide(time, maxTime).ToDouble();
+        progressBar.fillAmount = (float)time.Divide(maxTime).ToDouble();
 
-        if (moneyCost >= GM.money)
+        if (moneyCost > GM.money)
         {
             BuyButton.interactable = false;
         }
         else if (product)
         {
-            if (productCost >= product.quantity)
+            if (productCost > product.quantity)
             {
                 BuyButton.interactable = false;
             }
@@ -96,14 +96,14 @@ public class Generator : MonoBehaviour
 
     public void Buy()
     {
-        if(moneyCost > GM.money)
+        if (moneyCost > GM.money)
         {
             return;
         }
 
         if (product)
         {
-            if(productCost >= product.quantity)
+            if (productCost > product.quantity)
             {
                 return;
             }
