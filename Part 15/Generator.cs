@@ -33,7 +33,7 @@ public class Generator : MonoBehaviour
     void Update()
     {
         quantityDisp.text = GM.SciNotToUSName(data.quantity);
-        incomeDisp.text = GM.SciNotToUSName(data.quantity * data.income.Divide(data.maxTime)) + "/s";
+        incomeDisp.text = GM.SciNotToUSName(data.income);
         nameDisp.text = generatorName;
 
         if (product)
