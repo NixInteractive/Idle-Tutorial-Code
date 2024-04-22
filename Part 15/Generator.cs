@@ -23,10 +23,9 @@ public class Generator : MonoBehaviour
 
     public string generatorName;
 
-    void Awake()
+    void Start()
     {
-        data.defaultIncome = data.income;
-        data.defaultTime = data.maxTime;
+        
     }
 
     // Update is called once per frame
