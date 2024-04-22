@@ -13,8 +13,6 @@ public class GeneratorData
     public BigDouble oozeCost;
     public BigDouble maxTime;
     public BigDouble time;
-    public BigDouble defaultTime;
-    public BigDouble defaultIncome;
 
     public GeneratorData(GeneratorData data)
     {
