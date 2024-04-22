@@ -184,8 +184,6 @@ public class GameManager : MonoBehaviour
             {
                 generators[i].data.quantity = 0;
                 generators[i].data.time = 0;
-                generators[i].data.maxTime = generators[i].data.defaultTime;
-                generators[i].data.income = generators[i].data.defaultIncome;
             }
 
             for(int i = 0; i <upgrades.Length; i++)
