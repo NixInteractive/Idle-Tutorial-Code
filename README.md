@@ -1,4 +1,4 @@
-# IdleTutorial
+# Idle Tutorial
 
 This code is for those following my Idle tutorials. The code is split into folders based on which video they go with. This is intended to be used to check your code against mine for errors.
 
